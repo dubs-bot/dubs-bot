@@ -20,8 +20,8 @@ create table if not exists digit_patterns
     pattern_key         varchar(32)   not null unique,
     pattern_name        varchar(128)  not null,
     pattern_emoji       varchar(8)    not null,
-    pattern_points      int           not null check (pattern_points > 0),
-    pattern_description varchar(2048) not null
+    pattern_description varchar(2048) not null,
+    pattern_points      int           not null check (pattern_points > 0)
 );
 
 create table if not exists user_scores
