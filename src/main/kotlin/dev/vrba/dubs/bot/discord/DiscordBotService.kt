@@ -1,6 +1,5 @@
 package dev.vrba.dubs.bot.discord
 
-import dev.kord.common.entity.PresenceStatus
 import dev.kord.core.Kord
 import dev.vrba.dubs.bot.configuration.DiscordConfiguration
 import kotlinx.coroutines.async
