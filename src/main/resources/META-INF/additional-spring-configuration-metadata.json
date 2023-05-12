@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "discord.token",
+      "type": "java.lang.String",
+      "description": "The bot token used for authentication against the Discord gateway."
+    }
+  ]
+}
