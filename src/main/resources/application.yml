@@ -1,0 +1,5 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://${DATABASE_URL:localhost:5432/dubs-bot}
+    username: ${DATABASE_USERNAME:dubs-bot}
+    password: ${DATABASE_PASSWORD:dubs-bot}
