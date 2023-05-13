@@ -11,6 +11,9 @@ spring:
 discord:
   token: ${DISCORD_TOKEN:}
 
+server:
+  port: ${PORT:8080}
+
 logging:
   level:
     root: info
