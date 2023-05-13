@@ -4,7 +4,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 plugins {
     id("org.springframework.boot") version "3.0.6"
     id("io.spring.dependency-management") version "1.1.0"
-    id("org.graalvm.buildtools.native") version "0.9.20"
+//    id("org.graalvm.buildtools.native") version "0.9.20"
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
 }
@@ -21,6 +21,9 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven {
+        setUrl("https://oss.sonatype.org/content/repositories/snapshots")
+    }
 }
 
 dependencies {
@@ -31,7 +34,7 @@ dependencies {
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-    implementation("dev.kord:kord-core:0.9.0")
+    implementation("dev.kord:kord-core:feature-graal-SNAPSHOT")
     implementation("dev.kord.x:emoji:0.5.0")
     implementation("org.flywaydb:flyway-core")
     runtimeOnly("org.postgresql:postgresql")

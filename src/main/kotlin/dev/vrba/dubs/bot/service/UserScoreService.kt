@@ -68,7 +68,7 @@ class UserScoreService(
         val instance = guildRepository.findByGuild(id) ?: Guild(guild = id, name = "", icon = "")
         val updated = instance.copy(
             name = guild.name,
-            icon = guild.icon?.cdnUrl?.toUrl { format = Image.Format.PNG } ?: ""
+            icon = guild.getIconUrl(Image.Format.PNG) ?: ""
         )
 
         guildRepository.save(updated)
