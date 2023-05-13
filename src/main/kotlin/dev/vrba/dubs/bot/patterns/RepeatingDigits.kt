@@ -137,15 +137,17 @@ object RepeatingDigits : DigitPatternsProvider {
             else -> listOf(over9000)
         }
 
-        return base + matchClearDigits(count, id) + matchPureDigits(count, id)
+        return base + matchSpecialDigits(count, id)
     }
 
-    private fun matchClearDigits(count: Int, id: BigInteger): List<DigitPattern> {
-        return listOfNotNull(clearDigits.takeIf { count >= 2 && id.mod(BigInteger.TEN) == BigInteger.ZERO })
-    }
+    private fun matchSpecialDigits(count: Int, id: BigInteger): List<DigitPattern> {
+        val pure = count >= 2 && id.mod(BigInteger.TEN) == BigInteger(count.toString())
+        val clear = count >= 2 && id.mod(BigInteger.TEN) == BigInteger.ZERO
 
-    private fun matchPureDigits(count: Int, id: BigInteger): List<DigitPattern> {
-        return listOfNotNull(pureDigits.takeIf { count >= 2 && id.mod(BigInteger.TEN) == BigInteger(count.toString()) })
+        return listOfNotNull(
+            pureDigits.takeIf { pure },
+            clearDigits.takeIf { clear }
+        )
     }
 
     private fun countRepeatingDigits(id: BigInteger): Int {
