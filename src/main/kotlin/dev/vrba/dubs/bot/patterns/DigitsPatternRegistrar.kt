@@ -1,11 +1,13 @@
 package dev.vrba.dubs.bot.patterns
 
+import dev.vrba.dubs.bot.domain.DigitPattern
 import dev.vrba.dubs.bot.service.DigitPatternService
 import jakarta.annotation.PostConstruct
 import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.math.BigInteger
 
 @Component
 class DigitsPatternRegistrar(
@@ -23,5 +25,9 @@ class DigitsPatternRegistrar(
             service.updatePatterns(patterns)
             // TODO: Invalidate client SSG incremental compilation cache
         }
+    }
+
+    fun matchPatterns(id: BigInteger): List<DigitPattern> {
+        return providers.flatMap { it.getMatchedPatterns(id) }
     }
 }
