@@ -10,9 +10,13 @@ jobs:
           command: |
             chmod 755 ./gradlew
             ./gradlew test
+      - run:
+          name: Export JUnit tests
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
       - store_test_results:
           name: JUnit tests
-          path: ./build/test-results/test/TEST-*.xml
+          path: ~/test-results/junit
 
   build-bot-docker-image:
     docker:
