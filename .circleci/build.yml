@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Setup version environment variables
           command: |
-            echo "export VERSION=$(cat ./VERSION)" >> bash.en
+            echo "export VERSION=$(cat ./VERSION)" >> bash.env
           persist_to_workspace:
             root: .
             paths:
