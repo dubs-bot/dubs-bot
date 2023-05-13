@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
     id("org.springframework.boot") version "3.0.6"
@@ -9,7 +10,7 @@ plugins {
 }
 
 group = "dev.vrba"
-version = "0.0.1-SNAPSHOT"
+version = file("./VERSION").readText().trim()
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 configurations {
@@ -49,4 +50,8 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.withType<BootBuildImage> {
+    imageName.set("ghcr.io/dubs-bot/dubs-bot:$version")
 }

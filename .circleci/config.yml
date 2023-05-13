@@ -1,0 +1,12 @@
+version: 2.1
+setup: true
+orbs:
+  path-filtering: circleci/path-filtering@0.1.4
+workflows:
+  setup:
+    jobs:
+      - path-filtering/filter:
+          base-revision: main
+          config-path: .circleci/build.yml
+          mapping: |
+            VERSION run_build_workflow true

@@ -1,0 +1,74 @@
+version: 2.1
+jobs:
+  setup-bot-environment:
+    machine:
+      image: ubuntu-2204:2023.04.2
+    steps:
+      - checkout
+      - run:
+          name: Setup version environment variables
+          command: |
+            echo "export VERSION=$(cat ./VERSION)" >> bash.en
+          persist_to_workspace:
+            root: .
+            paths:
+              - bash.env
+
+  build-bot-docker-image:
+    docker:
+      - image: docker:23.0.5-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build Docker native image with graalvm
+          command: |
+            source bash.env
+            
+            apk add --update openjdk17
+            export GRADLE_USER_HOME=`pwd`/.gradle
+            
+            chmod 755 ./gradlew
+            ./gradlew bootBuildImage
+            
+            echo $GITHUB_ACCESS_TOKEN | docker login ghcr.io -u dubs-bot --password-stdin
+            docker push ghcr.io/dubs-bot/dubs-bot:$VERSION
+
+  deploy-bot-docker-image:
+    machine:
+      image: ubuntu-2204:2023.04.2
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy built Docker image to Railway
+          command: |
+            source bash.env
+            
+            mkdir -p /tmp/railway
+            cd /tmp/railway
+            
+            echo "FROM ghcr.io/dubs-bot/dubs-bot:$VERSION" > ./Dockerfile
+            curl -fsSL https://railway.app/install.sh | sh
+            
+            railway up --service=bot -d
+            
+workflows:
+  build:
+    when: << pipeline.parameters.run_build_workflow >>
+    jobs:
+      - setup-bot-environment
+      - build-bot-docker-image:
+          requires:
+            - setup-bot-environment
+      - deploy-bot-docker-image:
+          requires:
+            - build-bot-docker-image
+
+parameters:
+  run_build_workflow:
+    type: boolean
+    default: false
