@@ -16,6 +16,6 @@ data class Guild(
     @Column("guild_name")
     val name: String,
 
-    @Column("guild_name")
+    @Column("guild_icon")
     val icon: String
 )

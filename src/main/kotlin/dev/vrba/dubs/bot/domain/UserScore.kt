@@ -16,6 +16,6 @@ data class UserScore(
     @Column("guild_id")
     val guild: BigInteger,
 
-    @Column("points")
+    @Column("total_points")
     val points: BigInteger
 )
