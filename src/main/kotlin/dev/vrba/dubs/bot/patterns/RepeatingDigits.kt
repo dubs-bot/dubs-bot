@@ -5,7 +5,7 @@ import dev.vrba.dubs.bot.domain.DigitPattern
 import org.springframework.stereotype.Component
 import java.math.BigInteger
 
-private val dubs = DigitPattern(
+val dubs = DigitPattern(
     key = "dubs",
     name = "Dubs",
     description = "Two repeating digits at the end of the number.",
@@ -13,7 +13,7 @@ private val dubs = DigitPattern(
     points = 10
 )
 
-private val trips = DigitPattern(
+val trips = DigitPattern(
     key = "trips",
     name = "Trips",
     description = "Three repeating digits at the end of the number.",
@@ -21,7 +21,7 @@ private val trips = DigitPattern(
     points = 100
 )
 
-private val quads = DigitPattern(
+val quads = DigitPattern(
     key = "quads",
     name = "Quads",
     description = "Four repeating digits at the end of the number.",
@@ -29,7 +29,7 @@ private val quads = DigitPattern(
     points = 1_000
 )
 
-private val pentas = DigitPattern(
+val pentas = DigitPattern(
     key = "pentas",
     name = "Pentas",
     description = "Five repeating digits at the end of the number.",
@@ -37,7 +37,7 @@ private val pentas = DigitPattern(
     points = 10_000
 )
 
-private val sextas = DigitPattern(
+val sextas = DigitPattern(
     key = "sextas",
     name = "Sextas",
     description = "Six repeating digits at the end of the number.",
@@ -45,7 +45,7 @@ private val sextas = DigitPattern(
     points = 100_000
 )
 
-private val septas = DigitPattern(
+val septas = DigitPattern(
     key = "septas",
     name = "Septas",
     description = "Seven repeating digits at the end of the number.",
@@ -53,7 +53,7 @@ private val septas = DigitPattern(
     points = 1_000_000
 )
 
-private val octas = DigitPattern(
+val octas = DigitPattern(
     key = "octas",
     name = "Octas",
     description = "Eight repeating digits at the end of the number.",
@@ -61,7 +61,7 @@ private val octas = DigitPattern(
     points = 10_000_000
 )
 
-private val nonas = DigitPattern(
+val nonas = DigitPattern(
     key = "nonas",
     name = "Nonas",
     description = "Nine repeating digits at the end of the number.",
@@ -69,7 +69,7 @@ private val nonas = DigitPattern(
     points = 100_000_000
 )
 
-private val decas = DigitPattern(
+val decas = DigitPattern(
     key = "decas",
     name = "Decas",
     description = "Ten repeating digits at the end of the number.",
@@ -77,16 +77,25 @@ private val decas = DigitPattern(
     points = 1_000_000_000
 )
 
+val over9000 = DigitPattern(
+    key = "over-9000",
+    name = "IT'S OVER 9000!",
+    description = "More than ten repeatings digits at the end of the number. What. The. Actual. Fuck????",
+    emoji = Emojis.infinity.unicode,
+    points = 1_000_000_000
+)
+
 @Component
 object RepeatingDigits : DigitPatternsProvider {
 
     override fun getAvailablePatterns(): List<DigitPattern> {
-        return listOf(dubs, trips, quads, pentas, sextas, septas, octas, nonas, decas)
+        return listOf(dubs, trips, quads, pentas, sextas, septas, octas, nonas, decas, over9000)
     }
 
     override fun getMatchedPatterns(id: BigInteger): List<DigitPattern> {
         val count = countRepeatingDigits(id)
         val base = when (count) {
+            1 -> emptyList()
             2 -> listOf(dubs)
             3 -> listOf(trips)
             4 -> listOf(quads)
@@ -96,7 +105,7 @@ object RepeatingDigits : DigitPatternsProvider {
             8 -> listOf(octas)
             9 -> listOf(nonas)
             10 -> listOf(decas)
-            else -> emptyList()
+            else -> listOf(over9000)
         }
 
         // TODO: Clear digits
@@ -108,7 +117,7 @@ object RepeatingDigits : DigitPatternsProvider {
 
     private fun countRepeatingDigits(id: BigInteger): Int {
         val last = id.rem(BigInteger.TEN)
-        val sequence = generateSequence(id) { id.div(BigInteger.TEN) }
+        val sequence = generateSequence(id) { it.div(BigInteger.TEN) }
 
         return sequence.takeWhile { it.rem(BigInteger.TEN) == last }.count()
     }
