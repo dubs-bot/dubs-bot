@@ -12,6 +12,7 @@ jobs:
             ./gradlew test
       - run:
           name: Export JUnit tests
+          command: |
             mkdir -p ~/test-results/junit/
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
       - store_test_results:
