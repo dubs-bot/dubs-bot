@@ -1,5 +1,19 @@
 version: 2.1
 jobs:
+  run-bot-tests:
+    docker:
+      - image: gradle:7.6.1
+    steps:
+      - checkout
+      - run:
+          name: Run JUnit tests
+          command: |
+            chmod 755 ./gradlew
+            ./gradlew test
+      - store_test_results:
+          name: JUnit tests
+          path: ./build/test-results/test/TEST-*.xml
+
   build-bot-docker-image:
     docker:
       - image: docker:23.0.5-git
@@ -39,6 +53,9 @@ jobs:
             railway up --service=bot -d
             
 workflows:
+  test:
+    jobs:
+      - run-bot-tests
   build:
     when: << pipeline.parameters.run_build_workflow >>
     jobs:
