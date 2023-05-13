@@ -16,7 +16,6 @@ class DigitsPatternRegistrar(
 ) {
     private val logger: Logger = LoggerFactory.getLogger(this::class.qualifiedName)
 
-    @PostConstruct
     fun registerAvailablePatterns() {
         val patterns = providers.flatMap { it.getAvailablePatterns() }
 
