@@ -25,7 +25,7 @@ class MessageDigitPatternsModule(private val registrar: DigitsPatternRegistrar) 
 
             listOf(Emojis.fourLeafClover.unicode)
                 .plus(matches.map { it.emoji })
-                .map{ DiscordEmoji.Generic(it) }
+                .map { DiscordEmoji.Generic(it) }
                 .forEach {
                     message.addReaction(it)
                 }
