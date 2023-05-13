@@ -80,22 +80,51 @@ val decas = DigitPattern(
 val over9000 = DigitPattern(
     key = "over-9000",
     name = "IT'S OVER 9000!",
-    description = "More than ten repeatings digits at the end of the number. What. The. Actual. Fuck????",
+    description = "More than ten repeating digits at the end of the number. What. The. Actual. Fuck????",
     emoji = Emojis.infinity.unicode,
     points = 1_000_000_000
+)
+
+val clearDigits = DigitPattern(
+    key = "clear",
+    name = "Clear digits",
+    description = "Dubs, trips, quads etc. with zeros as the repeating digits at the end.",
+    emoji = Emojis.cocktail.unicode,
+    points = 100
+)
+
+val pureDigits = DigitPattern(
+    key = "pure",
+    name = "Pure digits",
+    description = "Dubs, trips, quads etc. where the number of repeated digits matches the digit. Eg. 22, 333, 4444, 5555...",
+    emoji = Emojis.dove.unicode,
+    points = 100
 )
 
 @Component
 object RepeatingDigits : DigitPatternsProvider {
 
     override fun getAvailablePatterns(): List<DigitPattern> {
-        return listOf(dubs, trips, quads, pentas, sextas, septas, octas, nonas, decas, over9000)
+        return listOf(
+            dubs,
+            trips,
+            quads,
+            pentas,
+            sextas,
+            septas,
+            octas,
+            nonas,
+            decas,
+            over9000,
+            clearDigits,
+            pureDigits
+        )
     }
 
     override fun getMatchedPatterns(id: BigInteger): List<DigitPattern> {
         val count = countRepeatingDigits(id)
         val base = when (count) {
-            1 -> emptyList()
+            1 -> return emptyList()
             2 -> listOf(dubs)
             3 -> listOf(trips)
             4 -> listOf(quads)
@@ -108,11 +137,15 @@ object RepeatingDigits : DigitPatternsProvider {
             else -> listOf(over9000)
         }
 
-        // TODO: Clear digits
+        return base + matchClearDigits(count, id) + matchPureDigits(count, id)
+    }
 
-        // TODO: Pure digits
+    private fun matchClearDigits(count: Int, id: BigInteger): List<DigitPattern> {
+        return listOfNotNull(clearDigits.takeIf { count >= 2 && id.mod(BigInteger.TEN) == BigInteger.ZERO })
+    }
 
-        return base
+    private fun matchPureDigits(count: Int, id: BigInteger): List<DigitPattern> {
+        return listOfNotNull(pureDigits.takeIf { count >= 2 && id.mod(BigInteger.TEN) == BigInteger(count.toString()) })
     }
 
     private fun countRepeatingDigits(id: BigInteger): Int {
