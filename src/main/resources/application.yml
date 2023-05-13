@@ -10,3 +10,7 @@ spring:
 
 discord:
   token: ${DISCORD_TOKEN:}
+
+logging:
+  level:
+    root: info
