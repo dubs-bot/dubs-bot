@@ -21,6 +21,7 @@ class DigitsPatternRegistrar(
         runBlocking {
             logger.info("Registering a total of ${patterns.size} patterns")
             service.updatePatterns(patterns)
+            // TODO: Invalidate client SSG incremental compilation cache
         }
     }
 }
