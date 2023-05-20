@@ -1,0 +1,1 @@
+alter table user_score_matches drop constraint fk_pattern_key;
