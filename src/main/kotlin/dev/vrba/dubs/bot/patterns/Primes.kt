@@ -15,7 +15,7 @@ val primes = DigitPattern(
 )
 
 @Component
-class Primes : DigitPatternsProvider {
+object Primes : DigitPatternsProvider {
 
     override fun getAvailablePatterns(): List<DigitPattern> {
         return listOf(primes)

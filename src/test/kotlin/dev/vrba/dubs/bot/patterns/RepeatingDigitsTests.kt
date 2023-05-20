@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigInteger
 
-class RepeatingDigitsTests {
+internal class RepeatingDigitsTests {
 
     @Test
     fun `test that singles are not matched`() {
