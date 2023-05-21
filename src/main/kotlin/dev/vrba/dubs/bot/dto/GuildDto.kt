@@ -10,7 +10,7 @@ data class GuildDto(
 
 fun Guild.toDto(): GuildDto {
     return GuildDto(
-        id.toString(),
+        guild.toString(),
         name,
         icon
     )

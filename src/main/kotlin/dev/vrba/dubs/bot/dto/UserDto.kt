@@ -10,7 +10,7 @@ data class UserDto(
 
 fun User.toDto(): UserDto {
     return UserDto(
-        id.toString(),
+        user.toString(),
         name,
         avatar
     )

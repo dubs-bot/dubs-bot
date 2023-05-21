@@ -10,4 +10,6 @@ import java.math.BigInteger
 interface UserScoreMatchRepository : CoroutineCrudRepository<UserScoreMatch, Int> {
 
     fun findAllByUserAndGuildAndPatternIn(userId: BigInteger, guildId: BigInteger, patterns: List<String>): Flow<UserScoreMatch>
+
+    fun findAllByGuild(guild: BigInteger): Flow<UserScoreMatch>
 }

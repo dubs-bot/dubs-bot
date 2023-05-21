@@ -13,4 +13,6 @@ interface UserScoreRepository : CoroutineCrudRepository<UserScore, Int> {
 
     suspend fun findDistinctByUser(user: BigInteger): Flow<UserScore>
 
+    suspend fun findAllByGuild(guild: BigInteger): Flow<UserScore>
+
 }
