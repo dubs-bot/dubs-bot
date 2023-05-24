@@ -21,4 +21,8 @@ class GuildService(
 
         return guilds.toList()
     }
+
+    suspend fun getAllGuilds(): List<Guild> {
+        return guildRepository.findAll().toList()
+    }
 }

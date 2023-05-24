@@ -14,6 +14,14 @@ import java.math.BigInteger
 @RequestMapping("/api/v1/guilds")
 class GuildController(private val service: GuildService) {
 
+    @GetMapping
+    suspend fun all(): ResponseEntity<GuildResponse> {
+        val guilds = service.getAllGuilds()
+        val response = GuildResponse(guilds.map { it.toDto() })
+
+        return ResponseEntity.ok(response)
+    }
+
     @GetMapping("/user/{user}")
     suspend fun user(@PathVariable("user") user: BigInteger): ResponseEntity<GuildResponse> {
         val guilds = service.getGuildsWithUserScore(user)
