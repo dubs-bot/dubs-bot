@@ -23,6 +23,7 @@ springdoc:
 
 discord:
   token: ${DISCORD_TOKEN:}
+  api-key: ${WEB_API_KEY:nope}
 
 server:
   port: ${PORT:8080}
