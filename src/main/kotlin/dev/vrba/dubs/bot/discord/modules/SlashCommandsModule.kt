@@ -3,7 +3,10 @@ package dev.vrba.dubs.bot.discord.modules
 import dev.kord.common.Color
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
+import dev.kord.core.behavior.channel.asChannelOf
+import dev.kord.core.behavior.channel.asChannelOfOrNull
 import dev.kord.core.behavior.interaction.respondPublic
+import dev.kord.core.entity.channel.TextChannel
 import dev.kord.core.event.interaction.ChatInputCommandInteractionCreateEvent
 import dev.kord.core.event.interaction.GlobalChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
@@ -21,10 +24,9 @@ class SlashCommandsModule : DiscordBotModule {
         client.createGlobalChatInputCommand("patterns", "Returns a link to the listing of all recognized patterns")
 
         client.on<ChatInputCommandInteractionCreateEvent> {
-            println(this)
             interaction.respondPublic {
                 when (interaction.invokedCommandName) {
-                    "leaderboard" -> leaderboardCommandOutput(interaction.invokedCommandGuildId)
+                    "leaderboard" -> leaderboardCommandOutput(interaction.channel.asChannelOfOrNull<TextChannel>()?.guildId)
                     "patterns" -> patternsCommandOutput()
                     else -> embed {
                         title = "Unknown command"
@@ -36,7 +38,7 @@ class SlashCommandsModule : DiscordBotModule {
     }
 
     private fun InteractionResponseCreateBuilder.leaderboardCommandOutput(guild: Snowflake?) {
-        val link = "https://dubsbot.online/leaderboard/${guild?.toString().orEmpty()}"
+        val link = "https://dubsbot.online/leaderboards/${guild?.toString().orEmpty()}"
 
         embed {
             url = link
