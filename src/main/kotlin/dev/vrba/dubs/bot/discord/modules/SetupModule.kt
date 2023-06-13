@@ -13,14 +13,11 @@ import reactor.core.publisher.Mono
 class SetupModule(private val registrar: DigitsPatternRegistrar) : DiscordBotModule {
 
     override fun register(client: GatewayDiscordClient): Mono<Void> {
-        registrar.registerAvailablePatterns()
+        val activity = ClientActivity.watching("for dubs")
+        val presence = ClientPresence.online(activity)
+        val handler = client.updatePresence(presence)
 
-        return client.on(ReadyEvent::class.java) {
-            val activity = ClientActivity.watching("for dubs")
-            val presence = ClientPresence.online(activity)
-
-            client.updatePresence(presence)
-        }.then()
+        return handler.then(Mono.fromRunnable { registrar.registerAvailablePatterns() })
     }
 
 }
