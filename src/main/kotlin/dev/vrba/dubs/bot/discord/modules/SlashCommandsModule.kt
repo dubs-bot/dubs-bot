@@ -53,7 +53,7 @@ class SlashCommandsModule : DiscordBotModule {
     }
 
     private fun leaderboardEmbed(guild: Optional<Snowflake>): EmbedCreateSpec {
-        val id = guild.map { it.toString() }.orElse("")
+        val id = guild.map { it.asString() }.orElse("")
         val link = "https://dubsbot.online/leaderboards/$id"
         val embed = EmbedCreateSpec.builder()
             .url(link)
