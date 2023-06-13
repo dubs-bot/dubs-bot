@@ -1,9 +1,10 @@
 package dev.vrba.dubs.bot.discord
 
-import dev.kord.core.Kord
+import discord4j.core.GatewayDiscordClient
+import reactor.core.publisher.Mono
 
 interface DiscordBotModule {
 
-    suspend fun register(client: Kord)
+    fun register(client: GatewayDiscordClient): Mono<Void>
 
 }

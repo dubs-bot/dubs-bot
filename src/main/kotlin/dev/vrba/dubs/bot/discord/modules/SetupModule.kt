@@ -1,20 +1,26 @@
 package dev.vrba.dubs.bot.discord.modules
 
-import dev.kord.core.Kord
-import dev.kord.core.event.gateway.ReadyEvent
-import dev.kord.core.on
 import dev.vrba.dubs.bot.discord.DiscordBotModule
 import dev.vrba.dubs.bot.patterns.DigitsPatternRegistrar
+import discord4j.core.GatewayDiscordClient
+import discord4j.core.event.domain.lifecycle.ReadyEvent
+import discord4j.core.`object`.presence.ClientActivity
+import discord4j.core.`object`.presence.ClientPresence
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Mono
 
 @Component
 class SetupModule(private val registrar: DigitsPatternRegistrar) : DiscordBotModule {
 
-    override suspend fun register(client: Kord) {
-        client.on<ReadyEvent> {
-            registrar.registerAvailablePatterns()
-            client.editPresence { watching("for dubs") }
-        }
+    override fun register(client: GatewayDiscordClient): Mono<Void> {
+        registrar.registerAvailablePatterns()
+
+        return client.on(ReadyEvent::class.java) {
+            val activity = ClientActivity.watching("for dubs")
+            val presence = ClientPresence.online(activity)
+
+            client.updatePresence(presence)
+        }.then()
     }
 
 }
