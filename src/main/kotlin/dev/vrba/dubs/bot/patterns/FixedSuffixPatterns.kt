@@ -1,7 +1,7 @@
 package dev.vrba.dubs.bot.patterns
 
-import dev.kord.x.emoji.Emojis
 import dev.vrba.dubs.bot.domain.DigitPattern
+import dev.vrba.dubs.bot.util.*
 import org.springframework.stereotype.Component
 import java.math.BigInteger
 import kotlin.math.floor
@@ -12,7 +12,7 @@ val literally1984 = DigitPattern(
     key = "literally-1984",
     name = "Literally 1984",
     description = "A number ending with 1984",
-    emoji = Emojis.eye.unicode,
+    emoji = EmojiEye,
     points = 1000
 )
 
@@ -20,7 +20,7 @@ val jackpot = DigitPattern(
     key = "jackpot",
     name = "Jackpot baby!",
     description = "A number ending with 777. Yes this is a nuggy reference.",
-    emoji = Emojis.slotMachine.unicode,
+    emoji = EmojiSlotMachine,
     points = 100
 )
 
@@ -28,7 +28,7 @@ val blazeIt = DigitPattern(
     key = "420-blaze-it",
     name = "420 Blaze it!",
     description = "A number ending with 420",
-    emoji = Emojis.fire.unicode,
+    emoji = EmojiFire,
     points = 100
 )
 
@@ -36,7 +36,7 @@ val jetFuel = DigitPattern(
     key = "jet-fuel",
     name = "Jet fuel can't melt steel beams",
     description = "A number ending with 911",
-    emoji = Emojis.airplane.unicode,
+    emoji = EmojiAirplane,
     points = 100
 )
 
@@ -44,7 +44,7 @@ val funnySexNumber = DigitPattern(
     key = "sixty-nine",
     name = "69",
     description = "Haha funny sex number",
-    emoji = Emojis.cancer.unicode,
+    emoji = EmojiCancer,
     points = 10
 )
 

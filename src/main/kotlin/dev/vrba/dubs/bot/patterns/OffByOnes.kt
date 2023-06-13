@@ -1,7 +1,7 @@
 package dev.vrba.dubs.bot.patterns
 
-import dev.kord.x.emoji.Emojis
 import dev.vrba.dubs.bot.domain.DigitPattern
+import dev.vrba.dubs.bot.util.EmojiClown
 import org.springframework.stereotype.Component
 import java.math.BigInteger
 
@@ -9,7 +9,7 @@ val offByOnes = DigitPattern(
     key = "off-by-ones",
     name = "Off by ones",
     description = "Matches a digits that's one low or one high from a repeating digits pattern that's quads or better. Unlucky.",
-    emoji = Emojis.clown.unicode,
+    emoji = EmojiClown,
     points = 10
 )
 
