@@ -2,7 +2,6 @@ package dev.vrba.dubs.bot.patterns
 
 import dev.kord.x.emoji.Emojis
 import dev.vrba.dubs.bot.domain.DigitPattern
-import dev.vrba.dubs.bot.util.*
 import org.springframework.stereotype.Component
 import java.math.BigInteger
 
@@ -10,7 +9,7 @@ val dubs = DigitPattern(
     key = "dubs",
     name = "Dubs",
     description = "Two repeating digits at the end of the number.",
-    emoji = EmojiTwo,
+    emoji = Emojis.two.unicode,
     points = 10
 )
 
@@ -18,7 +17,7 @@ val trips = DigitPattern(
     key = "trips",
     name = "Trips",
     description = "Three repeating digits at the end of the number.",
-    emoji = EmojiThree,
+    emoji = Emojis.three.unicode,
     points = 100
 )
 
@@ -26,7 +25,7 @@ val quads = DigitPattern(
     key = "quads",
     name = "Quads",
     description = "Four repeating digits at the end of the number.",
-    emoji = EmojiFour,
+    emoji = Emojis.four.unicode,
     points = 1_000
 )
 
@@ -34,7 +33,7 @@ val pentas = DigitPattern(
     key = "pentas",
     name = "Pentas",
     description = "Five repeating digits at the end of the number.",
-    emoji = EmojiFive,
+    emoji = Emojis.five.unicode,
     points = 10_000
 )
 
@@ -42,7 +41,7 @@ val sextas = DigitPattern(
     key = "sextas",
     name = "Sextas",
     description = "Six repeating digits at the end of the number.",
-    emoji = EmojiSix,
+    emoji = Emojis.six.unicode,
     points = 100_000
 )
 
@@ -50,7 +49,7 @@ val septas = DigitPattern(
     key = "septas",
     name = "Septas",
     description = "Seven repeating digits at the end of the number.",
-    emoji = EmojiSeven,
+    emoji = Emojis.seven.unicode,
     points = 1_000_000
 )
 
@@ -58,7 +57,7 @@ val octas = DigitPattern(
     key = "octas",
     name = "Octas",
     description = "Eight repeating digits at the end of the number.",
-    emoji = EmojiEight,
+    emoji = Emojis.eight.unicode,
     points = 10_000_000
 )
 
@@ -66,7 +65,7 @@ val nonas = DigitPattern(
     key = "nonas",
     name = "Nonas",
     description = "Nine repeating digits at the end of the number.",
-    emoji = EmojiNine,
+    emoji = Emojis.nine.unicode,
     points = 100_000_000
 )
 
@@ -74,7 +73,7 @@ val decas = DigitPattern(
     key = "decas",
     name = "Decas",
     description = "Ten repeating digits at the end of the number.",
-    emoji = EmojiTen,
+    emoji = Emojis.keycapTen.unicode,
     points = 1_000_000_000
 )
 
@@ -82,7 +81,7 @@ val over9000 = DigitPattern(
     key = "over-9000",
     name = "IT'S OVER 9000!",
     description = "More than ten repeating digits at the end of the number. What. The. Actual. Fuck????",
-    emoji = EmojiInfinity,
+    emoji = Emojis.infinity.unicode,
     points = 1_000_000_000
 )
 
@@ -90,7 +89,7 @@ val clearDigits = DigitPattern(
     key = "clear",
     name = "Clear digits",
     description = "Dubs, trips, quads etc. with zeros as the repeating digits at the end.",
-    emoji = EmojiCocktail,
+    emoji = Emojis.cocktail.unicode,
     points = 100
 )
 
@@ -98,7 +97,7 @@ val pureDigits = DigitPattern(
     key = "pure",
     name = "Pure digits",
     description = "Dubs, trips, quads etc. where the number of repeated digits matches the digit. Eg. 22, 333, 4444, 5555...",
-    emoji = EmojiDove,
+    emoji = Emojis.dove.unicode,
     points = 100
 )
 

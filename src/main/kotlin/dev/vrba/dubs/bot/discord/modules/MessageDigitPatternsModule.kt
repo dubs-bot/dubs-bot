@@ -7,13 +7,13 @@ import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.core.on
 import dev.kord.rest.builder.message.create.embed
 import dev.kord.x.emoji.DiscordEmoji
+import dev.kord.x.emoji.Emojis
 import dev.kord.x.emoji.addReaction
 import dev.vrba.dubs.bot.discord.DiscordBotModule
 import dev.vrba.dubs.bot.discord.toBigInteger
 import dev.vrba.dubs.bot.domain.DigitPattern
 import dev.vrba.dubs.bot.patterns.DigitsPatternRegistrar
 import dev.vrba.dubs.bot.service.UserScoreService
-import dev.vrba.dubs.bot.util.EmojiFourLeafClover
 import org.springframework.stereotype.Component
 
 @Component
@@ -35,7 +35,7 @@ class MessageDigitPatternsModule(
             }
 
             // Add reactions to the message
-            listOf(EmojiFourLeafClover)
+            listOf(Emojis.fourLeafClover.unicode)
                 .plus(matches.map { it.emoji })
                 .map { DiscordEmoji.Generic(it) }
                 .forEach {

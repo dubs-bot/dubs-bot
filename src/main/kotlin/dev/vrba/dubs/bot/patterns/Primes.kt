@@ -1,7 +1,7 @@
 package dev.vrba.dubs.bot.patterns
 
+import dev.kord.x.emoji.Emojis
 import dev.vrba.dubs.bot.domain.DigitPattern
-import dev.vrba.dubs.bot.util.EmojiNerd
 import org.springframework.stereotype.Component
 import java.math.BigInteger
 
@@ -10,7 +10,7 @@ val primes = DigitPattern(
     key = "primes",
     name = "Primes",
     description = "A (highly probable) prime number!",
-    emoji = EmojiNerd,
+    emoji = Emojis.nerd.unicode,
     points = 100
 )
 
