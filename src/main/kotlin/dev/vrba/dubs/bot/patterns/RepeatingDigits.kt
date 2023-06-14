@@ -1,5 +1,6 @@
 package dev.vrba.dubs.bot.patterns
 
+import dev.kord.x.emoji.Emojis
 import dev.vrba.dubs.bot.domain.DigitPattern
 import dev.vrba.dubs.bot.util.*
 import org.springframework.stereotype.Component

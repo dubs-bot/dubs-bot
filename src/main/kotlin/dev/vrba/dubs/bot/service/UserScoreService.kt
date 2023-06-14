@@ -1,16 +1,17 @@
 package dev.vrba.dubs.bot.service
 
+import dev.kord.rest.Image
+import dev.vrba.dubs.bot.discord.toBigInteger
 import dev.vrba.dubs.bot.domain.*
 import dev.vrba.dubs.bot.repository.GuildRepository
 import dev.vrba.dubs.bot.repository.UserRepository
 import dev.vrba.dubs.bot.repository.UserScoreMatchRepository
 import dev.vrba.dubs.bot.repository.UserScoreRepository
-import discord4j.rest.util.Image
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
 import java.math.BigInteger
-import discord4j.core.`object`.entity.User as DiscordUser
-import discord4j.core.`object`.entity.Guild as DiscordGuild
+import dev.kord.core.entity.Guild as KordGuild
+import dev.kord.core.entity.User as KordUser
 
 @Service
 class UserScoreService(
@@ -20,9 +21,9 @@ class UserScoreService(
     private val matchRepository: UserScoreMatchRepository
 ) {
 
-    suspend fun updateScore(user: DiscordUser, guild: DiscordGuild, matches: List<DigitPattern>) {
-        val userId = user.id.asBigInteger()
-        val guildId = guild.id.asBigInteger()
+    suspend fun updateScore(user: KordUser, guild: KordGuild, matches: List<DigitPattern>) {
+        val userId = user.id.toBigInteger()
+        val guildId = guild.id.toBigInteger()
 
         val score = scoreRepository.findByUserAndGuild(userId, guildId) ?: UserScore(
             user = userId,
@@ -51,23 +52,23 @@ class UserScoreService(
         matchRepository.saveAll(updatedMatches).toList()
     }
 
-    suspend fun updateUser(user: DiscordUser) {
-        val id = user.id.asBigInteger()
+    suspend fun updateUser(user: KordUser) {
+        val id = user.id.toBigInteger()
         val instance = userRepository.findByUser(id) ?: User(user = id, name = "", avatar = "")
         val updated = instance.copy(
             name = user.username,
-            avatar = (user.getAvatarUrl(Image.Format.PNG).orElse(user.defaultAvatarUrl))
+            avatar = (user.avatar ?: user.defaultAvatar).cdnUrl.toUrl { format = Image.Format.PNG }
         )
 
         userRepository.save(updated)
     }
 
-    suspend fun updateGuild(guild: DiscordGuild) {
-        val id = guild.id.asBigInteger()
+    suspend fun updateGuild(guild: KordGuild) {
+        val id = guild.id.toBigInteger()
         val instance = guildRepository.findByGuild(id) ?: Guild(guild = id, name = "", icon = "")
         val updated = instance.copy(
             name = guild.name,
-            icon = guild.getIconUrl(Image.Format.PNG).orElse("")
+            icon = guild.getIconUrl(Image.Format.PNG) ?: ""
         )
 
         guildRepository.save(updated)

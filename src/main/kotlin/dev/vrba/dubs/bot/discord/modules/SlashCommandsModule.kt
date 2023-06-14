@@ -1,86 +1,73 @@
 package dev.vrba.dubs.bot.discord.modules
 
+import dev.kord.common.Color
+import dev.kord.common.entity.Snowflake
+import dev.kord.core.Kord
+import dev.kord.core.behavior.channel.asChannelOf
+import dev.kord.core.behavior.channel.asChannelOfOrNull
+import dev.kord.core.behavior.interaction.respondPublic
+import dev.kord.core.entity.channel.TextChannel
+import dev.kord.core.event.interaction.ChatInputCommandInteractionCreateEvent
+import dev.kord.core.event.interaction.GlobalChatInputCommandInteractionCreateEvent
+import dev.kord.core.on
+import dev.kord.rest.builder.message.create.InteractionResponseCreateBuilder
+import dev.kord.rest.builder.message.create.actionRow
+import dev.kord.rest.builder.message.create.embed
 import dev.vrba.dubs.bot.discord.DiscordBotModule
-import discord4j.common.util.Snowflake
-import discord4j.core.GatewayDiscordClient
-import discord4j.core.event.domain.interaction.ChatInputInteractionEvent
-import discord4j.core.spec.EmbedCreateSpec
-import discord4j.discordjson.json.ApplicationCommandRequest
-import discord4j.rest.util.Color
-import kotlinx.coroutines.reactor.awaitSingle
-import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Component
-import reactor.core.publisher.Mono
-import java.util.*
 
 @Component
 class SlashCommandsModule : DiscordBotModule {
 
-    override fun register(client: GatewayDiscordClient): Mono<Void> {
-        return runBlocking {
-            val applicationId = client.restClient.applicationId.awaitSingle()
-            val service = client.restClient.applicationService
-            val requests = listOf(
-                ApplicationCommandRequest.builder()
-                    .name("leaderboard")
-                    .description("Returns a link with the leaderboard for this guild")
-                    .build(),
-                ApplicationCommandRequest.builder()
-                    .name("patterns")
-                    .description("Returns a link to the listing of all recognized patterns")
-                    .build(),
-            )
+    override suspend fun register(client: Kord) {
+        client.createGlobalChatInputCommand("leaderboard", "Returns a link with the leaderboard for this guild")
+        client.createGlobalChatInputCommand("patterns", "Returns a link to the listing of all recognized patterns")
 
-            val handler = client.on(ChatInputInteractionEvent::class.java) {
-                it.reply().withEmbeds(
-                    when (it.commandName) {
-                        "leaderboard" -> leaderboardEmbed(it.interaction.guildId)
-                        "patterns" -> patternsEmbed()
-                        else -> unknownCommandEmbed()
+        client.on<ChatInputCommandInteractionCreateEvent> {
+            interaction.respondPublic {
+                when (interaction.invokedCommandName) {
+                    "leaderboard" -> leaderboardCommandOutput(interaction.channel.asChannelOfOrNull<TextChannel>()?.guildId)
+                    "patterns" -> patternsCommandOutput()
+                    else -> embed {
+                        title = "Unknown command"
+                        description = "Something has gone terribly wrong"
                     }
-                )
-            }
-
-            requests.fold(handler.then()) { composition, request ->
-                composition.and(
-                    service.createGlobalApplicationCommand(
-                        applicationId,
-                        request
-                    )
-                )
+                }
             }
         }
     }
 
-    private fun leaderboardEmbed(guild: Optional<Snowflake>): EmbedCreateSpec {
-        val id = guild.map { it.toString() }.orElse("")
-        val link = "https://dubsbot.online/leaderboards/$id"
-        val embed = EmbedCreateSpec.builder()
-            .url(link)
-            .title("Leaderboard for this guild")
-            .color(Color.of(0x3b88c3))
-            .thumbnail("https://avatars.githubusercontent.com/u/133408315")
-            .description(link)
+    private fun InteractionResponseCreateBuilder.leaderboardCommandOutput(guild: Snowflake?) {
+        val link = "https://dubsbot.online/leaderboards/${guild?.toString().orEmpty()}"
 
-        return embed.build()
+        embed {
+            url = link
+            color = Color(0x3b88c3)
+            title = "Leaderboard for this guild"
+            thumbnail { url = "https://avatars.githubusercontent.com/u/133408315" }
+        }
+
+        actionRow {
+            linkButton(link) {
+                label = "Leaderboard"
+            }
+        }
     }
 
-    private fun patternsEmbed(): EmbedCreateSpec {
+    private fun InteractionResponseCreateBuilder.patternsCommandOutput() {
         val link = "https://dubsbot.online/patterns"
-        val embed = EmbedCreateSpec.builder()
-            .url(link)
-            .color(Color.of(0x3b88c3))
-            .title("The listing of all recognized digit patterns")
-            .thumbnail("https://avatars.githubusercontent.com/u/133408315")
-            .description(link)
 
-        return embed.build()
-    }
+        embed {
+            url = link
+            color = Color(0x3b88c3)
+            title = "The listing of all recognized digit patterns"
+            thumbnail { url = "https://avatars.githubusercontent.com/u/133408315" }
+        }
 
-    private fun unknownCommandEmbed(): EmbedCreateSpec {
-        return EmbedCreateSpec.builder()
-            .title("Unknown command")
-            .description("This is probably a bug")
-            .build()
+        actionRow {
+            linkButton(link) {
+                label = "All recognized digit patterns"
+            }
+        }
     }
 }
